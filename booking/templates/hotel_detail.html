@@ -1,0 +1,42 @@
+<!-- templates/hotel_detail.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Chi tiết: {{ hotel.name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>{{ hotel.name }}</h2>
+    </div>
+    <div class="image-gallery">
+        {% if pictures %}
+            {% for pic in pictures %}
+                <img src="{{ pic.image_url }}" alt="Hình ảnh khách sạn">
+            {% endfor %}
+        {% else %}
+            <img src="{% static 'images/default-hotel.jpg' %}" alt="Chưa có ảnh">
+        {% endif %}
+    </div>
+    <hr>
+    <p><strong>Địa chỉ:</strong> {{ hotel.address }}</p>
+    <p><strong>Mô tả:</strong> {{ hotel.description }}</p>
+</div>
+
+<h3>Danh sách phòng có sẵn</h3>
+{% for room in rooms %}
+<a href="{% url 'room_detail' room.room_id %}" class="room-card-link">
+    <div class="card room-card">
+        <div class="card-image">
+            <img src="{% static 'images/default-room.jpg' %}" alt="{{ room.room_type }}">
+        </div>
+        <div class="card-details">
+            <h4>Phòng {{ room.room_number }} - {{ room.room_type }}</h4>
+            <p><strong>Giá:</strong> ${{ room.price_per_night }} / đêm</p>
+            <p><strong>Trạng thái:</strong> <span style="color: var(--success-color);">{{ room.status }}</span></p>
+        </div>
+    </div>
+</a>
+{% empty %}
+    <div class="card"><p>Hiện không có phòng trống nào tại khách sạn này.</p></div>
+{% endfor %}
+{% endblock %}

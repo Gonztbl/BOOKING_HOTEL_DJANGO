@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Đặt phòng{% endblock %}
+{% block content %}
+<h2>Đặt phòng thành công!</h2>
+<p>Phòng: {{ booking.room.room_type }}</p>
+<p>Ngày đến: {{ booking.check_in }}</p>
+<p>Ngày đi: {{ booking.check_out }}</p>
+<p>Tổng tiền: {{ booking.total }}</p>
+<a href="{% url 'payment' booking.booking_id %}">Thanh toán</a>
+{% endblock %}

@@ -1,0 +1,61 @@
+<!-- templates/home.html (Phiên bản nâng cấp) -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Tìm & Đặt phòng khách sạn giá tốt nhất{% endblock %}
+
+{% block content %}
+<!-- BỎ ĐI CLASS "container" Ở MAIN, VÌ HERO CẦN FULL-WIDTH -->
+{# Thay đổi trong base.html: <main> thay vì <main class="container"> #}
+{# Nếu không muốn sửa base.html, bạn có thể bỏ qua phần này #}
+
+<!-- ======================= HERO SECTION ======================= -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1>Tìm kiếm chỗ nghỉ tiếp theo</h1>
+        <p>Tìm ưu đãi khách sạn, nhà riêng và nhiều hơn nữa...</p>
+    </div>
+</section>
+
+<!-- ======================= NỘI DUNG CHÍNH ======================= -->
+<div class="container">
+    <!-- Search Box -->
+    <div class="search-box">
+        <form method="get" class="search-form">
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem;">Tìm kiếm</button>
+        </form>
+    </div>
+
+    <!-- Danh sách khách sạn -->
+    <h2 class="section-title">Khám phá các khách sạn nổi bật</h2>
+
+    {% for hotel in hotels %}
+    <a href="{% url 'hotel_detail' hotel.hotel_id %}" class="card-link">
+        <div class="card">
+            <div class="card-image">
+                <!-- Hiển thị ảnh khách sạn nếu có, nếu không thì dùng ảnh mặc định -->
+                {% if hotel.image %}
+                    <img src="{{ hotel.image.url }}" alt="{{ hotel.name }}">
+                {% else %}
+                    <img src="{% static 'images/default-hotel.jpg' %}" alt="{{ hotel.name }}">
+                {% endif %}
+            </div>
+            <div class="card-content">
+                <h4>{{ hotel.name }}</h4>
+                <p>{{ hotel.address }}</p>
+                <p style="margin-top: 1rem;">{{ hotel.description|truncatewords:25 }}</p>
+            </div>
+        </div>
+    </a>
+    {% empty %}
+        <div class="card"><p>Không tìm thấy khách sạn nào phù hợp.</p></div>
+    {% endfor %}
+
+    <!-- Phân trang (nếu có) -->
+    {% if hotels.has_other_pages %}
+        <nav class="pagination-nav">
+            <!-- Code phân trang của bạn ở đây -->
+        </nav>
+    {% endif %}
+</div>
+{% endblock %}

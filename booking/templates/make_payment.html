@@ -1,0 +1,22 @@
+<!-- templates/make_payment.html -->
+{% extends 'base.html' %}
+{% block title %}Thanh toán{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 600px; margin: auto;">
+    <div class="card-header"><h2>Thông tin thanh toán</h2></div>
+    <p><strong>Khách sạn:</strong> {{ booking.room.hotel.name }}</p>
+    <p><strong>Tổng tiền:</strong> <span style="font-size: 1.5rem; color: var(--primary-color);">${{ booking.total }}</span></p>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="payment_method">Phương thức thanh toán:</label>
+            <select name="payment_method" id="payment_method" required>
+                <option value="Tiền mặt">Thanh toán tại quầy</option>
+                <option value="vietqr_payos">Thanh toán qua VietQR (PayOS)</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Xác nhận thanh toán</button>
+    </form>
+</div>
+{% endblock %}

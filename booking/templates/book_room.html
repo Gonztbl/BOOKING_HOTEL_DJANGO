@@ -1,0 +1,26 @@
+<!-- templates/book_room.html -->
+{% extends 'base.html' %}
+{% block title %}Đặt phòng{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 600px; margin: auto;">
+    <div class="card-header"><h2>Xác nhận đặt phòng</h2></div>
+    <p><strong>Khách sạn:</strong> {{ room.hotel.name }}</p>
+    <p><strong>Phòng:</strong> {{ room.room_type }} - ${{ room.price_per_night }}/đêm</p>
+    {% if error %}
+        <p class="alert alert-error">{{ error }}</p>
+    {% endif %}
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_check_in">Ngày nhận phòng:</label>
+            <input type="date" name="check_in" id="id_check_in" required>
+        </div>
+        <div class="form-group">
+            <label for="id_check_out">Ngày trả phòng:</label>
+            <input type="date" name="check_out" id="id_check_out" required>
+        </div>
+        <button type="submit" class="btn btn-secondary" style="width: 100%;">Xác nhận & Đặt ngay</button>
+    </form>
+</div>
+{% endblock %}

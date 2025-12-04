@@ -1,0 +1,52 @@
+<!-- templates/search.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Kết quả tìm kiếm{% endblock %}
+
+{% block content %}
+<!-- Form tìm kiếm -->
+<div class="card search-card">
+    <!-- ... code form tìm kiếm như đã cung cấp ... -->
+</div>
+
+<div class="search-results">
+    <h3 class="results-header">Tìm thấy 3 kết quả phù hợp</h3>
+
+    <!-- === HƯỚNG DẪN THÊM ẢNH VÀO KẾT QUẢ TÌM KIẾM === -->
+    <!-- Kết quả 1 -->
+    <a href="#" class="room-card-link">
+        <div class="card room-card">
+            <div class="room-image">
+                <img src="{% static 'images/room-1.jpg' %}" alt="Phòng Deluxe">
+            </div>
+            <div class="room-details">
+                <h4>Khách sạn Paradise</h4>
+                <h5>Phòng Deluxe hướng biển</h5>
+                <p>Sức chứa: 2 người</p>
+            </div>
+            <div class="room-price">
+                <span class="price-amount">$150</span>
+                <span class="price-period">/ đêm</span>
+            </div>
+        </div>
+    </a>
+    <!-- Kết quả 2 -->
+    <a href="#" class="room-card-link">
+        <div class="card room-card">
+            <div class="room-image">
+                <img src="{% static 'images/room-3.jpg' %}" alt="Phòng Standard">
+            </div>
+            <div class="room-details">
+                <h4>Khách sạn Sông Hàn</h4>
+                <h5>Phòng Standard thành phố</h5>
+                <p>Sức chứa: 2 người</p>
+            </div>
+            <div class="room-price">
+                <span class="price-amount">$80</span>
+                <span class="price-period">/ đêm</span>
+            </div>
+        </div>
+    </a>
+</div>
+{% endblock %}

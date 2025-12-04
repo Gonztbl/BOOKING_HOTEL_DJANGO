@@ -1,0 +1,20 @@
+<!-- templates/login.html -->
+{% extends 'base.html' %}
+{% block title %}Đăng nhập{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 2rem auto;">
+    <div class="card-header"><h2>Đăng nhập</h2></div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_email">Email:</label>
+            <input type="text" name="email" id="id_email" required>
+        </div>
+        <div class="form-group">
+            <label for="id_password">Mật khẩu:</label>
+            <input type="password" name="password" id="id_password" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Đăng nhập</button>
+    </form>
+</div>
+{% endblock %}

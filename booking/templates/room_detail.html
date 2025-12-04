@@ -1,0 +1,66 @@
+<!-- templates/room_detail.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Chi tiết phòng{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Phòng {{ room.room_number }} - {{ room.room_type }}</h2>
+        <h3>Tại: {{ room.hotel.name }}</h3>
+    </div>
+    
+    <div class="image-gallery">
+        {% if pictures %}
+            {% for pic in pictures %}
+                <img src="{{ pic.picture_url.url }}" alt="Hình ảnh phòng">
+            {% endfor %}
+        {% else %}
+            <img src="{% static 'images/default-room.jpg' %}" alt="Chưa có ảnh">
+        {% endif %}
+    </div>
+    <hr>
+    <p><strong>Giá:</strong> <span style="font-size: 1.2rem; font-weight: bold;">${{ room.price_per_night }}</span></p>
+    <p><strong>Mô tả:</strong> {{ room.description }}</p>
+    <div style="margin-top: 2rem;">
+        <a href="{% url 'book_room' room.room_id %}" class="btn btn-secondary">Đặt phòng này ngay</a>
+    </div>
+</div>
+
+<!-- Khu vực đánh giá -->
+<div class="card">
+    <div class="card-header"><h3>Đánh giá từ khách hàng</h3></div>
+    {% for review in reviews %}
+        <div class="review-item" style="border-bottom: 1px solid #eee; padding-bottom: 1rem; margin-bottom: 1rem;">
+            <p><strong>{{ review.user.name }}</strong> - <span>{{ review.created_at|date:"d/m/Y" }}</span></p>
+            <p>Đánh giá: {{ review.rating }}/5 ★</p>
+            <p><em>"{{ review.comment }}"</em></p>
+        </div>
+    {% empty %}
+        <p>Chưa có đánh giá nào cho phòng này.</p>
+    {% endfor %}
+</div>
+
+<!-- Form viết đánh giá -->
+{% if user %}
+<div class="card">
+    <div class="card-header"><h3>Viết đánh giá của bạn</h3></div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_rating">Điểm đánh giá (1-5):</label>
+            {{ form.rating }}
+        </div>
+        <div class="form-group">
+            <label for="id_comment">Bình luận:</label>
+            {{ form.comment }}
+        </div>
+        <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+    </form>
+</div>
+{% else %}
+<div class="card">
+    <p><a href="{% url 'login' %}">Đăng nhập</a> để viết đánh giá.</p>
+</div>
+{% endif %}
+{% endblock %}

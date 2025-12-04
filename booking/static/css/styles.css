@@ -1,0 +1,157 @@
+/* ===================================================================
+   STYLES.CSS - PHIÊN BẢN NÂNG CẤP LẤY CẢM HỨNG TỪ CÁC TRANG BOOKING
+   =================================================================== */
+
+/* 1. BIẾN MÀU VÀ THIẾT LẬP TOÀN CỤC */
+:root {
+    --color-brand: #003b95;          /* Màu xanh dương đậm của Booking.com */
+    --color-action: #006ce4;         /* Màu xanh sáng hơn cho link và button */
+    --color-accent: #ffb700;         /* Màu vàng cho ưu đãi, điểm nhấn */
+    --color-text: #1a1a1a;            /* Màu chữ chính (hơi xám, dễ đọc hơn đen) */
+    --color-text-light: #595959;     /* Màu chữ phụ */
+    --color-background: #f4f5f7;     /* Màu nền xám rất nhạt, làm nổi bật card trắng */
+    --color-card-bg: #ffffff;
+    --color-border: #e0e0e0;
+    --color-success: #008a05;
+    --color-error: #d91e18;
+
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --border-radius: 8px;
+    --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-strong: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* 2. RESET VÀ THIẾT LẬP BODY */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: var(--font-family);
+    background-color: var(--color-background);
+    color: var(--color-text);
+    line-height: 1.5;
+}
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: var(--color-action); }
+
+/* 3. CÁC THÀNH PHẦN CHÍNH */
+.container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+/* -- Navbar -- */
+.navbar {
+    background-color: var(--color-brand);
+    padding: 1rem 2rem;
+    color: white;
+}
+.navbar .container { display: flex; justify-content: space-between; align-items: center; }
+.navbar .logo { font-size: 1.5rem; font-weight: 700; color: white; }
+.navbar .nav-links a { color: white; font-weight: 500; margin-left: 1.5rem; opacity: 0.9; transition: opacity 0.2s; }
+.navbar .nav-links a:hover { opacity: 1; }
+
+/* -- Hero Section (KHẮC PHỤC ẢNH NỀN) -- */
+.hero-section {
+    position: relative;
+    height: 450px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+    /* ĐÂY LÀ NƠI THAY ẢNH NỀN CỦA BẠN */
+    background-image: url('../images/hotel-hero.jpg');
+    background-size: cover;
+    background-position: center;
+}
+/* Lớp phủ mờ để chữ dễ đọc hơn */
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.hero-content {
+    position: relative; /* Đảm bảo nội dung nổi trên lớp phủ */
+    z-index: 1;
+}
+.hero-content h1 { font-size: 3rem; margin-bottom: 1rem; }
+.hero-content p { font-size: 1.25rem; opacity: 0.9; }
+
+/* -- Search Box (trong Hero) -- */
+.search-box {
+    background: var(--color-card-bg);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-strong);
+    margin-top: -80px; /* Kéo lên đè lên Hero Section */
+    position: relative;
+    z-index: 2;
+}
+
+/* -- Tiêu đề các mục -- */
+.section-title {
+    font-size: 1.75rem;
+    color: var(--color-text);
+    margin: 3rem 0 1.5rem 0;
+}
+
+/* -- Card (cho Hotel, Room) -- */
+.card-link { display: block; color: inherit; }
+.card {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    display: flex;
+    transition: box-shadow 0.3s ease;
+}
+.card:hover { box-shadow: var(--shadow-light); }
+.card-image {
+    flex: 0 0 280px; /* Chiều rộng cố định */
+}
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.card-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.card-content h4 { font-size: 1.25rem; color: var(--color-brand); }
+.card-content p { margin-top: 0.5rem; color: var(--color-text-light); }
+
+/* -- Nút bấm -- */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    border: none;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+.btn-primary { background-color: var(--color-action); color: #fff; }
+.btn-primary:hover { background-color: var(--color-brand); }
+.btn-accent { background-color: var(--color-accent); color: #1a1a1a; }
+.btn-accent:hover { filter: brightness(1.1); }
+
+/* -- Forms (trong các trang con) -- */
+.form-card { max-width: 550px; margin: 2rem auto; }
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; font-weight: 500; margin-bottom: 0.5rem; }
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+}
+
+/* -- Bảng -- */
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+.table th { background-color: #f8f9fa; font-weight: 500; }

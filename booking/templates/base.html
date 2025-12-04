@@ -1,0 +1,38 @@
+<!-- templates/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Booking Hotel{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header class="navbar">
+        <a href="{% url 'home' %}" class="logo">🏨 HotelBooking</a>
+        <div class="nav-links">
+            {% if request.session.user_id %}
+                <a href="{% url 'profile' %}">Thông tin</a>
+                <a href="{% url 'my_bookings' %}">Đơn đặt</a>
+                <a href="{% url 'logout' %}">Đăng xuất</a>
+            {% else %}
+                <a href="{% url 'login' %}">Đăng nhập</a>
+                <a href="{% url 'register' %}">Đăng ký</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="container">
+        {% if messages %}
+            <ul class="messages-container">
+            {% for message in messages %}
+                <li class="alert alert-{{ message.tags|default:'info' }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

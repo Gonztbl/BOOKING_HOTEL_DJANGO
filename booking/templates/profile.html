@@ -1,0 +1,11 @@
+<!-- templates/profile.html -->
+{% extends 'base.html' %}
+{% block title %}Thông tin cá nhân{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header"><h2>Thông tin người dùng</h2></div>
+    <p><strong>Họ tên:</strong> {{ user.name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Số điện thoại:</strong> {{ user.phone }}</p>
+</div>
+{% endblock %}

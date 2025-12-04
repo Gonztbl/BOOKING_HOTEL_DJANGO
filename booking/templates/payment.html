@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Thanh toán{% endblock %}
+{% block content %}
+<h2>Thanh toán</h2>
+<p>Đơn đặt phòng: {{ booking.booking_id }}</p>
+<p>Số tiền: {{ booking.total }}</p>
+<form method="post">
+    {% csrf_token %}
+    <label>Phương thức thanh toán:</label>
+    <select name="payment_method">
+        <option value="Credit Card">Credit Card</option>
+        <option value="Momo">Momo</option>
+        <option value="Bank Transfer">Chuyển khoản</option>
+    </select><br>
+    <button type="submit">Thanh toán</button>
+</form>
+{% if success %}
+    <p style="color:green;">{{ success }}</p>
+{% endif %}
+{% endblock %}

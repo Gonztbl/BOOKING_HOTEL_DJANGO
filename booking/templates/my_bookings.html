@@ -1,0 +1,41 @@
+<!-- templates/my_bookings.html -->
+{% extends 'base.html' %}
+{% block title %}Đơn đặt của tôi{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header"><h2>Lịch sử đặt phòng</h2></div>
+    {% if bookings %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Khách sạn & Phòng</th>
+                <th>Ngày ở</th>
+                <th>Tổng tiền</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td>
+                    <strong>{{ booking.room.hotel.name }}</strong><br>
+                    <small>{{ booking.room.room_type }}</small>
+                </td>
+                <td>{{ booking.check_in|date:"d/m/Y" }} - {{ booking.check_out|date:"d/m/Y" }}</td>
+                <td><strong>${{ booking.total }}</strong></td>
+                <td>
+                    <a href="{% url 'make_payment' booking.booking_id %}" class="btn btn-secondary" style="margin-right: 10px;">Thanh toán</a>
+                    <form action="{% url 'cancel_booking' booking.booking_id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary" style="background-color: var(--error-color);">Hủy</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>Bạn chưa có đơn đặt phòng nào.</p>
+    {% endif %}
+</div>
+{% endblock %}
