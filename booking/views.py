@@ -47,6 +47,24 @@ else:
 # --- Kết thúc khởi tạo PayOS Client ---
 
 
+# === THÊM ENDPOINT PING-PONG ===
+@csrf_exempt
+def ping(request):
+    """
+    Endpoint đơn giản để kiểm tra server còn sống hay không.
+    Được dùng để giữ server không bị ngủ.
+    
+    Cách sử dụng:
+    - GET /api/ping/
+    - Response: {"status": "pong", "timestamp": "2024-01-15T10:30:45.123456Z"}
+    """
+    return JsonResponse({
+        "status": "pong",
+        "timestamp": now().isoformat()
+    })
+# === KẾT THÚC ENDPOINT PING-PONG ===
+
+
 def logout_view(request):
     # ... (giữ nguyên)
     logout(request)
@@ -375,22 +393,3 @@ from .forms import RegisterForm  # Đảm bảo đã import
 
 
 # ... các view khác
-
-# THÊM HÀM NÀY VÀO CUỐI FILE VIEWS.PY
-def register_view(request):
-    if request.method == 'POST':
-        # Logic xử lý khi người dùng gửi form
-        # Lưu ý: form hiện tại của bạn dùng cho User mặc định của Django,
-        # trong khi model của bạn lại là User tùy chỉnh.
-        # Bạn cần phải viết logic để lưu vào đúng model User của mình.
-        # Ví dụ:
-        # form = YourCustomRegisterForm(request.POST)
-        # if form.is_valid():
-        #     user = User.objects.create(...)
-        #     return redirect('login')
-        pass  # Tạm thời để trống
-    else:
-        # Khi người dùng truy cập lần đầu
-        form = RegisterForm()
-
-    return render(request, 'register.html', {'form': form})
