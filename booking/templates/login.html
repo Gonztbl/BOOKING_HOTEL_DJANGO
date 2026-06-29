@@ -1,20 +1,38 @@
 <!-- templates/login.html -->
 {% extends 'base.html' %}
-{% block title %}Đăng nhập{% endblock %}
+{% block title %}Đăng nhập - HotelBooking{% endblock %}
+
 {% block content %}
-<div class="card" style="max-width: 500px; margin: 2rem auto;">
-    <div class="card-header"><h2>Đăng nhập</h2></div>
-    <form method="post">
+<div class="auth-container">
+    <div class="auth-header">
+        <h2>Chào mừng trở lại</h2>
+        <p>Đăng nhập để tiếp tục kế hoạch du lịch của bạn</p>
+    </div>
+    
+    <form method="post" class="auth-form">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="id_email">Email:</label>
-            <input type="text" name="email" id="id_email" required>
+        <div class="auth-field">
+            <label for="id_email">
+                <i data-lucide="mail"></i>
+                <span>Địa chỉ Email</span>
+            </label>
+            <input type="email" name="email" id="id_email" placeholder="example@email.com" required>
         </div>
-        <div class="form-group">
-            <label for="id_password">Mật khẩu:</label>
-            <input type="password" name="password" id="id_password" required>
+        
+        <div class="auth-field">
+            <label for="id_password">
+                <i data-lucide="lock"></i>
+                <span>Mật khẩu</span>
+            </label>
+            <input type="password" name="password" id="id_password" placeholder="••••••••" required>
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%;">Đăng nhập</button>
+        
+        <button type="submit" class="btn-auth-submit">Đăng nhập</button>
     </form>
+
+    <div class="auth-footer">
+        <span>Bạn chưa có tài khoản? </span>
+        <a href="{% url 'register' %}">Đăng ký ngay</a>
+    </div>
 </div>
 {% endblock %}

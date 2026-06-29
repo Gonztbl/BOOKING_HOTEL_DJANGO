@@ -1,12 +1,82 @@
+<!-- templates/register.html -->
 {% extends 'base.html' %}
-{% block title %}Đăng ký{% endblock %}
+{% block title %}Đăng ký tài khoản - HotelBooking{% endblock %}
+
 {% block content %}
-<div class="card" style="max-width: 500px; margin: 2rem auto;">
-    <div class="card-header"><h2>Đăng ký tài khoản</h2></div>
-    <form method="post">
+<div class="auth-container" style="max-width: 500px; margin: 40px auto;">
+    <div class="auth-header">
+        <h2>Tạo tài khoản mới</h2>
+        <p>Đăng ký thành viên để nhận nhiều ưu đãi độc quyền</p>
+    </div>
+    
+    <form method="post" class="auth-form">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary" style="width:100%;">Đăng ký</button>
+        
+        <div class="auth-field">
+            <label for="id_name">
+                <i data-lucide="user"></i>
+                <span>Họ và tên</span>
+            </label>
+            <input type="text" name="name" id="id_name" required value="{{ form.name.value|default:'' }}" placeholder="Nhập họ và tên...">
+            {% if form.name.errors %}
+                <span class="field-error">{{ form.name.errors.as_text }}</span>
+            {% endif %}
+        </div>
+
+        <div class="auth-field">
+            <label for="id_email">
+                <i data-lucide="mail"></i>
+                <span>Địa chỉ Email</span>
+            </label>
+            <input type="email" name="email" id="id_email" required value="{{ form.email.value|default:'' }}" placeholder="name@example.com">
+            {% if form.email.errors %}
+                <span class="field-error">{{ form.email.errors.as_text }}</span>
+            {% endif %}
+        </div>
+
+        <div class="auth-field">
+            <label for="id_phone">
+                <i data-lucide="phone"></i>
+                <span>Số điện thoại</span>
+            </label>
+            <input type="text" name="phone" id="id_phone" required value="{{ form.phone.value|default:'' }}" placeholder="Nhập số điện thoại...">
+            {% if form.phone.errors %}
+                <span class="field-error">{{ form.phone.errors.as_text }}</span>
+            {% endif %}
+        </div>
+
+        <div class="auth-field">
+            <label for="id_password">
+                <i data-lucide="lock"></i>
+                <span>Mật khẩu</span>
+            </label>
+            <input type="password" name="password" id="id_password" required placeholder="Tối thiểu 6 ký tự">
+            {% if form.password.errors %}
+                <span class="field-error">{{ form.password.errors.as_text }}</span>
+            {% endif %}
+        </div>
+
+        <div class="auth-field">
+            <label for="id_confirm_password">
+                <i data-lucide="shield-check"></i>
+                <span>Xác nhận mật khẩu</span>
+            </label>
+            <input type="password" name="confirm_password" id="id_confirm_password" required placeholder="Nhập lại mật khẩu">
+            {% if form.confirm_password.errors %}
+                <span class="field-error">{{ form.confirm_password.errors.as_text }}</span>
+            {% endif %}
+        </div>
+
+        {% if form.non_field_errors %}
+            <div class="field-error alert alert-danger" style="margin-top: 10px;">{{ form.non_field_errors.as_text }}</div>
+        {% endif %}
+        
+        <button type="submit" class="btn-auth-submit">Đăng ký tài khoản</button>
     </form>
+
+    <div class="auth-footer">
+        <span>Bạn đã có tài khoản? </span>
+        <a href="{% url 'login' %}">Đăng nhập ngay</a>
+    </div>
 </div>
 {% endblock %}
