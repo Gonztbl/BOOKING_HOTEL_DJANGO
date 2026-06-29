@@ -6,33 +6,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Booking Hotel{% endblock %}</title>
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
     <header class="navbar">
-        <a href="{% url 'home' %}" class="logo">🏨 HotelBooking</a>
-        <div class="nav-links">
-            {% if request.session.user_id %}
-                <a href="{% url 'profile' %}">Thông tin</a>
-                <a href="{% url 'my_bookings' %}">Đơn đặt</a>
-                <a href="{% url 'logout' %}">Đăng xuất</a>
-            {% else %}
-                <a href="{% url 'login' %}">Đăng nhập</a>
-                <a href="{% url 'register' %}">Đăng ký</a>
-            {% endif %}
+        <div class="navbar-container">
+            <a href="{% url 'home' %}" class="logo">
+                <i data-lucide="hotel" class="logo-icon"></i>
+                <span>HotelBooking</span>
+            </a>
+            <div class="nav-links">
+                <a href="{% url 'home' %}" class="nav-item"><i data-lucide="compass"></i> Khám phá</a>
+                {% if request.session.user_id %}
+                    <a href="{% url 'profile' %}" class="nav-item"><i data-lucide="user"></i> Hồ sơ</a>
+                    <a href="{% url 'my_bookings' %}" class="nav-item"><i data-lucide="book-open"></i> Đơn đặt</a>
+                    <a href="{% url 'logout' %}" class="nav-item btn-logout"><i data-lucide="log-out"></i> Đăng xuất</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="nav-item btn-login"><i data-lucide="log-in"></i> Đăng nhập</a>
+                    <a href="{% url 'register' %}" class="nav-item btn-register"><i data-lucide="user-plus"></i> Đăng ký</a>
+                {% endif %}
+            </div>
         </div>
     </header>
 
-    <main class="container">
+    <main>
         {% if messages %}
-            <ul class="messages-container">
-            {% for message in messages %}
-                <li class="alert alert-{{ message.tags|default:'info' }}">{{ message }}</li>
-            {% endfor %}
-            </ul>
+            <div class="container">
+                <ul class="messages-container">
+                {% for message in messages %}
+                    <li class="alert alert-{{ message.tags|default:'info' }}">
+                        <i data-lucide="info" class="alert-icon"></i>
+                        <span>{{ message }}</span>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
         {% endif %}
 
         {% block content %}{% endblock %}
     </main>
+
+    <!-- Lucide Icon Initialization -->
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>

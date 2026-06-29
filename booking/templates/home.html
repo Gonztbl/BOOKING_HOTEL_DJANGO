@@ -1,61 +1,124 @@
-<!-- templates/home.html (Phiên bản nâng cấp) -->
+<!-- templates/home.html -->
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Tìm & Đặt phòng khách sạn giá tốt nhất{% endblock %}
 
 {% block content %}
-<!-- BỎ ĐI CLASS "container" Ở MAIN, VÌ HERO CẦN FULL-WIDTH -->
-{# Thay đổi trong base.html: <main> thay vì <main class="container"> #}
-{# Nếu không muốn sửa base.html, bạn có thể bỏ qua phần này #}
-
 <!-- ======================= HERO SECTION ======================= -->
 <section class="hero-section">
     <div class="hero-content">
         <h1>Tìm kiếm chỗ nghỉ tiếp theo</h1>
-        <p>Tìm ưu đãi khách sạn, nhà riêng và nhiều hơn nữa...</p>
+        <p>Khám phá ưu đãi khách sạn sang trọng, biệt thự biệt lập và nhiều hơn nữa...</p>
     </div>
 </section>
 
-<!-- ======================= NỘI DUNG CHÍNH ======================= -->
+<!-- ======================= MAIN CONTENT ======================= -->
 <div class="container">
-    <!-- Search Box -->
+    <!-- Floating Search Box -->
     <div class="search-box">
-        <form method="get" class="search-form">
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem;">Tìm kiếm</button>
+        <form method="get" class="search-form-row">
+            <div class="search-field">
+                <label for="id_keyword">
+                    <i data-lucide="search"></i>
+                    <span>Tên khách sạn</span>
+                </label>
+                <div class="search-input-wrapper">
+                    <input type="text" name="keyword" id="id_keyword" value="{{ request.GET.keyword|default:'' }}" placeholder="Bạn muốn đi đâu?">
+                </div>
+            </div>
+            <div class="search-field">
+                <label for="id_city">
+                    <i data-lucide="map-pin"></i>
+                    <span>Thành phố</span>
+                </label>
+                <div class="search-input-wrapper">
+                    <select name="city" id="id_city">
+                        {% for val, label in form.fields.city.choices %}
+                            <option value="{{ val }}" {% if request.GET.city == val %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="search-action">
+                <button type="submit" class="btn-submit">
+                    <i data-lucide="compass"></i>
+                    <span>Tìm kiếm</span>
+                </button>
+            </div>
         </form>
     </div>
 
-    <!-- Danh sách khách sạn -->
+    <!-- Hotel Grid List -->
     <h2 class="section-title">Khám phá các khách sạn nổi bật</h2>
 
-    {% for hotel in hotels %}
-    <a href="{% url 'hotel_detail' hotel.hotel_id %}" class="card-link">
-        <div class="card">
-            <div class="card-image">
-                <!-- Hiển thị ảnh khách sạn nếu có, nếu không thì dùng ảnh mặc định -->
-                {% if hotel.image %}
-                    <img src="{{ hotel.image.url }}" alt="{{ hotel.name }}">
-                {% else %}
-                    <img src="{% static 'images/default-hotel.jpg' %}" alt="{{ hotel.name }}">
-                {% endif %}
+    <div class="hotel-grid">
+        {% for hotel in hotels %}
+            <a href="{% url 'hotel_detail' hotel.hotel_id %}" class="hotel-card-link">
+                <div class="hotel-card">
+                    <div class="hotel-card-image">
+                        <!-- Custom hotel rating badge -->
+                        <div class="hotel-badge">
+                            <i data-lucide="star"></i>
+                            <span>Độc quyền</span>
+                        </div>
+                        
+                        <!-- fallback image handling -->
+                        {% if hotel.image %}
+                            <img src="{{ hotel.image.url }}" alt="{{ hotel.name }}">
+                        {% else %}
+                            <img src="{% static 'images/default-image.jpg' %}" alt="{{ hotel.name }}">
+                        {% endif %}
+                    </div>
+                    <div class="hotel-card-content">
+                        <div>
+                            <h3>{{ hotel.name }}</h3>
+                            <div class="hotel-card-address">
+                                <i data-lucide="map-pin"></i>
+                                <span>{{ hotel.address }}</span>
+                            </div>
+                            <p class="hotel-card-desc">{{ hotel.description|truncatewords:16 }}</p>
+                        </div>
+                        
+                        <div class="hotel-card-footer">
+                            <div class="hotel-rating">
+                                <span class="hotel-rating-badge">★ 4.8</span>
+                                <span style="color: var(--color-text-muted); font-size: 0.85rem;">Tuyệt vời</span>
+                            </div>
+                            <div class="hotel-action-arrow">
+                                <i data-lucide="arrow-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        {% empty %}
+            <div class="empty-state-card">
+                <i data-lucide="search-slash"></i>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-top: 12px;">Không tìm thấy khách sạn nào</h3>
+                <p style="margin-top: 8px;">Vui lòng thử tìm kiếm lại với từ khóa hoặc thành phố khác.</p>
             </div>
-            <div class="card-content">
-                <h4>{{ hotel.name }}</h4>
-                <p>{{ hotel.address }}</p>
-                <p style="margin-top: 1rem;">{{ hotel.description|truncatewords:25 }}</p>
-            </div>
-        </div>
-    </a>
-    {% empty %}
-        <div class="card"><p>Không tìm thấy khách sạn nào phù hợp.</p></div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 
-    <!-- Phân trang (nếu có) -->
+    <!-- Pagination Controls -->
     {% if hotels.has_other_pages %}
-        <nav class="pagination-nav">
-            <!-- Code phân trang của bạn ở đây -->
-        </nav>
+        <div class="pagination-container">
+            <nav class="pagination">
+                {% if hotels.has_previous %}
+                    <a href="?page=1{% if request.GET.keyword %}&keyword={{ request.GET.keyword }}{% endif %}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}" class="pagination-btn"><i data-lucide="chevrons-left"></i></a>
+                    <a href="?page={{ hotels.previous_page_number }}{% if request.GET.keyword %}&keyword={{ request.GET.keyword }}{% endif %}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}" class="pagination-btn"><i data-lucide="chevron-left"></i></a>
+                {% endif %}
+
+                <span class="pagination-current">
+                    {{ hotels.number }} / {{ hotels.paginator.num_pages }}
+                </span>
+
+                {% if hotels.has_next %}
+                    <a href="?page={{ hotels.next_page_number }}{% if request.GET.keyword %}&keyword={{ request.GET.keyword }}{% endif %}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}" class="pagination-btn"><i data-lucide="chevron-right"></i></a>
+                    <a href="?page={{ hotels.paginator.num_pages }}{% if request.GET.keyword %}&keyword={{ request.GET.keyword }}{% endif %}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}" class="pagination-btn"><i data-lucide="chevrons-right"></i></a>
+                {% endif %}
+            </nav>
+        </div>
     {% endif %}
 </div>
 {% endblock %}

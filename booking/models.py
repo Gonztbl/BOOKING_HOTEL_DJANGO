@@ -9,7 +9,6 @@ class Hotel(models.Model):
     description = models.CharField(max_length=300)
 
     class Meta:
-        managed = False
         db_table = 'HOTELS'
 
 class User(models.Model):
@@ -20,7 +19,6 @@ class User(models.Model):
     password = models.CharField(max_length=100)
 
     class Meta:
-        managed = False
         db_table = 'USERS'
 
 class Room(models.Model):
@@ -34,7 +32,6 @@ class Room(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.DO_NOTHING)
 
     class Meta:
-        managed = False
         db_table = 'ROOMS'
 
 class Booking(models.Model):
@@ -46,7 +43,6 @@ class Booking(models.Model):
     total = models.FloatField()
 
     class Meta:
-        managed = False
         db_table = 'BOOKINGS'
 
 class Payment(models.Model):
@@ -57,7 +53,6 @@ class Payment(models.Model):
     amount = models.FloatField()
 
     class Meta:
-        managed = False
         db_table = 'PAYMENTS'
 
 class Review(models.Model):
@@ -69,7 +64,6 @@ class Review(models.Model):
     created_at = models.DateTimeField()
 
     class Meta:
-        managed = False
         db_table = 'REVIEWS'
 
 class Picture(models.Model):
@@ -79,7 +73,6 @@ class Picture(models.Model):
     description = models.CharField(max_length=300)
 
     class Meta:
-        managed = False
         db_table = 'PICTURES'
 
 class RoomPicture(models.Model):
@@ -89,6 +82,5 @@ class RoomPicture(models.Model):
     number = models.IntegerField()
 
     class Meta:
-        managed = False
         db_table = 'Room_pictures'
         unique_together = (('picture_id', 'room'),)

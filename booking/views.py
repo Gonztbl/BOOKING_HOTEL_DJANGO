@@ -87,7 +87,7 @@ def login_view(request):
 
 def home(request):
     # ... (giữ nguyên)
-    hotels = Hotel.objects.all()
+    hotels = Hotel.objects.all().order_by('hotel_id')
     form = SearchForm(request.GET or None)
 
     if form.is_valid():

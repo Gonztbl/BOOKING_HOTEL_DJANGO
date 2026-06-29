@@ -1,157 +1,710 @@
 /* ===================================================================
-   STYLES.CSS - PHIÊN BẢN NÂNG CẤP LẤY CẢM HỨNG TỪ CÁC TRANG BOOKING
+   STYLES.CSS - PREMIUM DESIGN SYSTEM FOR HOTELBOOKING
    =================================================================== */
 
-/* 1. BIẾN MÀU VÀ THIẾT LẬP TOÀN CỤC */
+/* 1. CSS VARIABLES & DESIGN TOKENS */
 :root {
-    --color-brand: #003b95;          /* Màu xanh dương đậm của Booking.com */
-    --color-action: #006ce4;         /* Màu xanh sáng hơn cho link và button */
-    --color-accent: #ffb700;         /* Màu vàng cho ưu đãi, điểm nhấn */
-    --color-text: #1a1a1a;            /* Màu chữ chính (hơi xám, dễ đọc hơn đen) */
-    --color-text-light: #595959;     /* Màu chữ phụ */
-    --color-background: #f4f5f7;     /* Màu nền xám rất nhạt, làm nổi bật card trắng */
-    --color-card-bg: #ffffff;
-    --color-border: #e0e0e0;
-    --color-success: #008a05;
-    --color-error: #d91e18;
-
-    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --border-radius: 8px;
-    --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.06);
-    --shadow-strong: 0 4px 16px rgba(0, 0, 0, 0.12);
+    /* Color Palette */
+    --color-primary-900: #0f172a;      /* Deep Slate/Navy */
+    --color-primary-800: #1e293b;      /* Slate Gray */
+    --color-primary-700: #334155;
+    --color-brand: #2563eb;             /* Royal Indigo */
+    --color-brand-hover: #1d4ed8;
+    --color-accent: #f59e0b;            /* Amber Gold */
+    --color-accent-hover: #d97706;
+    --color-success: #10b981;
+    --color-error: #ef4444;
+    
+    /* Backgrounds */
+    --color-bg-main: #f8fafc;           /* Light Cool Gray */
+    --color-bg-card: #ffffff;
+    --color-bg-glass: rgba(255, 255, 255, 0.85);
+    
+    /* Text Colors */
+    --color-text-main: #0f172a;
+    --color-text-muted: #64748b;
+    --color-text-light: #94a3b8;
+    
+    /* Borders & Outlines */
+    --color-border: #e2e8f0;
+    --color-border-hover: #cbd5e1;
+    
+    /* Typography */
+    --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    
+    /* Layout Details */
+    --border-radius-sm: 8px;
+    --border-radius: 12px;
+    --border-radius-lg: 20px;
+    --border-radius-full: 9999px;
+    
+    /* Animations & Transitions */
+    --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s ease;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+    --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.08);
+    --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.1);
 }
 
-/* 2. RESET VÀ THIẾT LẬP BODY */
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* 2. BASE RESET & INITIAL SETUP */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: var(--font-family);
-    background-color: var(--color-background);
-    color: var(--color-text);
-    line-height: 1.5;
+    background-color: var(--color-bg-main);
+    color: var(--color-text-main);
+    line-height: 1.6;
 }
-img { max-width: 100%; display: block; }
-a { text-decoration: none; color: var(--color-action); }
 
-/* 3. CÁC THÀNH PHẦN CHÍNH */
-.container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+a {
+    color: var(--color-brand);
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
 
-/* -- Navbar -- */
+a:hover {
+    color: var(--color-brand-hover);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+ul {
+    list-style: none;
+}
+
+/* 3. CONTAINERS & LAYOUT */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+main {
+    min-height: calc(100vh - 80px);
+    padding-bottom: 80px;
+}
+
+/* 4. PREMIUM NAVIGATION BAR */
 .navbar {
-    background-color: var(--color-brand);
-    padding: 1rem 2rem;
-    color: white;
+    background-color: var(--color-primary-900);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 18px 0;
 }
-.navbar .container { display: flex; justify-content: space-between; align-items: center; }
-.navbar .logo { font-size: 1.5rem; font-weight: 700; color: white; }
-.navbar .nav-links a { color: white; font-weight: 500; margin-left: 1.5rem; opacity: 0.9; transition: opacity 0.2s; }
-.navbar .nav-links a:hover { opacity: 1; }
 
-/* -- Hero Section (KHẮC PHỤC ẢNH NỀN) -- */
+.navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    transition: var(--transition-fast);
+}
+
+.navbar .logo-icon {
+    color: var(--color-accent);
+    stroke-width: 2.5;
+}
+
+.navbar .logo:hover {
+    opacity: 0.95;
+    transform: scale(1.02);
+}
+
+.navbar .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.navbar .nav-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: var(--border-radius-sm);
+    transition: var(--transition-fast);
+}
+
+.navbar .nav-item svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.25;
+}
+
+.navbar .nav-item:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Buttons in navbar */
+.navbar .nav-item.btn-logout {
+    color: #fca5a5;
+}
+
+.navbar .nav-item.btn-logout:hover {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+.navbar .nav-item.btn-login {
+    color: var(--color-accent);
+}
+
+.navbar .nav-item.btn-login:hover {
+    background-color: rgba(245, 158, 11, 0.1);
+}
+
+.navbar .nav-item.btn-register {
+    background-color: var(--color-brand);
+    color: #ffffff;
+    border-radius: var(--border-radius-full);
+    padding: 10px 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.navbar .nav-item.btn-register:hover {
+    background-color: var(--color-brand-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+/* 5. HERO SECTION WITH GRADIENT OVERLAY */
 .hero-section {
     position: relative;
-    height: 450px;
+    height: 480px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #ffffff;
     text-align: center;
     padding: 2rem;
-    /* ĐÂY LÀ NƠI THAY ẢNH NỀN CỦA BẠN */
     background-image: url('../images/hotel-hero.jpg');
     background-size: cover;
     background-position: center;
+    border-radius: 0 0 32px 32px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
 }
-/* Lớp phủ mờ để chữ dễ đọc hơn */
+
+/* Luxury visual overlay */
 .hero-section::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(0, 0, 0, 0.4);
-}
-.hero-content {
-    position: relative; /* Đảm bảo nội dung nổi trên lớp phủ */
+    background: linear-gradient(
+        180deg, 
+        rgba(15, 23, 42, 0.75) 0%, 
+        rgba(15, 23, 42, 0.5) 60%, 
+        rgba(15, 23, 42, 0.85) 100%
+    );
     z-index: 1;
 }
-.hero-content h1 { font-size: 3rem; margin-bottom: 1rem; }
-.hero-content p { font-size: 1.25rem; opacity: 0.9; }
 
-/* -- Search Box (trong Hero) -- */
-.search-box {
-    background: var(--color-card-bg);
-    padding: 2rem;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-strong);
-    margin-top: -80px; /* Kéo lên đè lên Hero Section */
+.hero-content {
     position: relative;
     z-index: 2;
+    max-width: 700px;
+    animation: fadeIn 0.8s ease-out;
 }
 
-/* -- Tiêu đề các mục -- */
-.section-title {
-    font-size: 1.75rem;
-    color: var(--color-text);
-    margin: 3rem 0 1.5rem 0;
+.hero-content h1 {
+    font-size: 3.25rem;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* -- Card (cho Hotel, Room) -- */
-.card-link { display: block; color: inherit; }
-.card {
-    background: var(--color-card-bg);
+.hero-content p {
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: #f1f5f9;
+    opacity: 0.95;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* 6. FLOATING GRID SEARCH BOX */
+.search-box {
+    background: var(--color-bg-card);
+    padding: 28px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-xl);
     border: 1px solid var(--color-border);
-    border-radius: var(--border-radius);
-    margin-bottom: 1.5rem;
-    overflow: hidden;
+    margin-top: -65px;
+    position: relative;
+    z-index: 10;
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.search-form-row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr;
+    gap: 20px;
+    align-items: end;
+}
+
+@media (max-width: 768px) {
+    .search-form-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+.search-field {
     display: flex;
-    transition: box-shadow 0.3s ease;
+    flex-direction: column;
+    gap: 8px;
 }
-.card:hover { box-shadow: var(--shadow-light); }
-.card-image {
-    flex: 0 0 280px; /* Chiều rộng cố định */
+
+.search-field label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
-.card-image img {
+
+.search-field label svg {
+    width: 14px;
+    height: 14px;
+    color: var(--color-brand);
+}
+
+.search-input-wrapper {
+    position: relative;
+}
+
+.search-field input,
+.search-field select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--border-radius);
+    background-color: var(--color-bg-main);
+    color: var(--color-text-main);
+    font-size: 1.025rem;
+    font-weight: 600;
+    font-family: var(--font-family);
+    transition: var(--transition-normal);
+    outline: none;
+    appearance: none; /* Clear native style for selects */
+    -webkit-appearance: none;
+}
+
+/* Custom arrow for custom select fields */
+.search-field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+.search-field input::placeholder {
+    color: var(--color-text-muted);
+    font-weight: 400;
+}
+
+.search-field input:focus,
+.search-field select:focus {
+    border-color: var(--color-brand);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.search-action .btn-submit {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    border-radius: var(--border-radius);
+    background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-brand-hover) 100%);
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    transition: var(--transition-normal);
+}
+
+.search-action .btn-submit svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.5;
+}
+
+.search-action .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+}
+
+.search-action .btn-submit:active {
+    transform: translateY(0);
+}
+
+/* 7. SECTION TITLE */
+.section-title {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--color-text-main);
+    letter-spacing: -0.75px;
+    margin: 64px 0 24px 0;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -8px;
+    width: 48px; height: 4px;
+    background-color: var(--color-brand);
+    border-radius: var(--border-radius-full);
+}
+
+/* 8. HOTEL CARDS GRID */
+.hotel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 32px;
+    margin-bottom: 60px;
+}
+
+.hotel-card-link {
+    display: block;
+    color: inherit;
+}
+
+.hotel-card {
+    background-color: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition-normal);
+}
+
+.hotel-card-link:hover .hotel-card {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--color-border-hover);
+}
+
+.hotel-card-image {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    background-color: #cbd5e1;
+}
+
+.hotel-card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: var(--transition-normal);
 }
-.card-content {
-    padding: 1.5rem;
+
+.hotel-card-link:hover .hotel-card-image img {
+    transform: scale(1.05);
+}
+
+.hotel-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background-color: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: var(--border-radius-full);
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    z-index: 2;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.hotel-badge svg {
+    width: 12px;
+    height: 12px;
+    fill: var(--color-accent);
+    color: var(--color-accent);
+}
+
+.hotel-card-content {
+    padding: 24px;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    flex: 1;
+    justify-content: space-between;
 }
-.card-content h4 { font-size: 1.25rem; color: var(--color-brand); }
-.card-content p { margin-top: 0.5rem; color: var(--color-text-light); }
 
-/* -- Nút bấm -- */
-.btn {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--border-radius);
-    border: none;
-    font-size: 1rem;
+.hotel-card-content h3 {
+    font-size: 1.35rem;
     font-weight: 700;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s ease;
+    color: var(--color-text-main);
+    line-height: 1.3;
+    transition: var(--transition-fast);
 }
-.btn-primary { background-color: var(--color-action); color: #fff; }
-.btn-primary:hover { background-color: var(--color-brand); }
-.btn-accent { background-color: var(--color-accent); color: #1a1a1a; }
-.btn-accent:hover { filter: brightness(1.1); }
 
-/* -- Forms (trong các trang con) -- */
-.form-card { max-width: 550px; margin: 2rem auto; }
-.form-group { margin-bottom: 1.5rem; }
-.form-group label { display: block; font-weight: 500; margin-bottom: 0.5rem; }
-.form-group input, .form-group select, .form-group textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--color-border);
+.hotel-card-link:hover .hotel-card-content h3 {
+    color: var(--color-brand);
+}
+
+.hotel-card-address {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.hotel-card-address svg {
+    width: 16px;
+    height: 16px;
+    color: var(--color-text-light);
+    flex-shrink: 0;
+}
+
+.hotel-card-desc {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    margin-top: 14px;
+    line-height: 1.6;
+    flex-grow: 1;
+}
+
+.hotel-card-footer {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1.5px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hotel-rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-text-main);
+}
+
+.hotel-rating-badge {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--color-brand);
+    padding: 4px 8px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.8rem;
+}
+
+.hotel-action-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--border-radius-full);
+    background-color: var(--color-bg-main);
+    color: var(--color-text-muted);
+    transition: var(--transition-normal);
+}
+
+.hotel-action-arrow svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.5;
+}
+
+.hotel-card-link:hover .hotel-action-arrow {
+    background-color: var(--color-brand);
+    color: #ffffff;
+    transform: translateX(2px);
+}
+
+/* 9. NOTIFICATION MESSAGES */
+.messages-container {
+    margin: 24px 0;
+}
+
+.alert {
+    padding: 16px 20px;
     border-radius: var(--border-radius);
-    font-size: 1rem;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    font-size: 0.975rem;
+    box-shadow: var(--shadow-sm);
+    animation: fadeIn 0.4s ease-out;
 }
 
-/* -- Bảng -- */
-.table { width: 100%; border-collapse: collapse; }
-.table th, .table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
-.table th { background-color: #f8f9fa; font-weight: 500; }
+.alert-icon {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2.5;
+    flex-shrink: 0;
+}
+
+.alert-success {
+    background-color: #ecfdf5;
+    color: var(--color-success);
+    border: 1px solid #a7f3d0;
+}
+
+.alert-success .alert-icon {
+    color: var(--color-success);
+}
+
+.alert-error,
+.alert-danger {
+    background-color: #fef2f2;
+    color: var(--color-error);
+    border: 1px solid #fecaca;
+}
+
+.alert-error .alert-icon,
+.alert-danger .alert-icon {
+    color: var(--color-error);
+}
+
+.alert-info {
+    background-color: #eff6ff;
+    color: var(--color-brand);
+    border: 1px solid #bfdbfe;
+}
+
+/* Empty states */
+.empty-state-card {
+    grid-column: 1 / -1;
+    background-color: var(--color-bg-card);
+    border: 1.5px dashed var(--color-border);
+    border-radius: var(--border-radius-lg);
+    padding: 60px 40px;
+    text-align: center;
+    color: var(--color-text-muted);
+}
+
+.empty-state-card svg {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 16px auto;
+    color: var(--color-text-light);
+}
+
+/* 10. ANIMATIONS */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 11. PAGINATION STYLING */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin: 48px 0;
+}
+
+.pagination {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    padding: 8px 16px;
+    border-radius: var(--border-radius-full);
+    box-shadow: var(--shadow-sm);
+    gap: 12px;
+}
+
+.pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--border-radius-full);
+    color: var(--color-text-muted);
+    transition: var(--transition-fast);
+}
+
+.pagination-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.5;
+}
+
+.pagination-btn:hover {
+    background-color: var(--color-bg-main);
+    color: var(--color-brand);
+}
+
+.pagination-current {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-text-main);
+}
