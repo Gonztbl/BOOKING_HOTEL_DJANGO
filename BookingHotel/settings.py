@@ -1,15 +1,14 @@
 # --- START OF FILE settings.py (UPDATED) ---
 
 from pathlib import Path
-import environ # <== THÊM MỚI
-import os      # <== THÊM MỚI
+import environ
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- KHỞI TẠO DJANGO-ENVIRON ---
 env = environ.Env(
-    # Thiết lập kiểu dữ liệu và giá trị mặc định
     DEBUG=(bool, False)
 )
 # Đọc file .env
@@ -21,17 +20,13 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# Đọc SECRET_KEY từ file .env
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# Đọc DEBUG từ file .env
-DEBUG = env('DEBUG')
+DEBUG = env('DEBUG', default=False)
 
-# ALLOWED_HOSTS nên được cấu hình trong .env khi triển khai
-# Ví dụ: ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
-# ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1', 'localhost'])
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+# ALLOWED_HOSTS configuration
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1', 'localhost', '*.onrender.com'])
 
 
 # Application definition
@@ -47,6 +42,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -78,19 +74,20 @@ WSGI_APPLICATION = 'BookingHotel.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# Đọc cấu hình database từ file .env
+# === TIDB MYSQL DATABASE CONFIGURATION ===
 DATABASES = {
     'default': {
-        'ENGINE': 'mssql',
-        'NAME': env('DB_NAME', default='Hotel'),
-        'USER': env('DB_USER', default='sa'),
-        'PASSWORD': env('DB_PASSWORD', default='123456'),
-        'HOST': env('DB_HOST', default='DESKTOP-T84E9CO'),
-        'PORT': env('DB_PORT', default=''),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': env('DB_NAME', default='bookinghotel'),
+        'USER': env('DB_USER', default='3q3Yfgwt9qwz5pZ.root'),
+        'PASSWORD': env('DB_PASSWORD', default=''),
+        'HOST': env('DB_HOST', default='gateway01.ap-northeast-1.prod.aws.tidbcloud.com'),
+        'PORT': env('DB_PORT', default=4000),
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
-        },
+            'charset': 'utf8mb4',
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'ssl_ca': env('DB_SSL_CA', default=None),
+        }
     }
 }
 
@@ -114,30 +111,34 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
-# --- Static files (CSS, JavaScript, Images tĩnh) ---
 STATIC_URL = '/static/'
-# BỔ SUNG: Thư mục để Django tìm các file static
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# STATICFILES_DIRS
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'booking/static'), # Chỉ định rõ thư mục static của app booking
+    os.path.join(BASE_DIR, 'booking/static'),
 ]
-# <== BỔ SUNG TOÀN BỘ KHỐI NÀY VÀO FILE SETTINGS.PY ==>
+
+# WhiteNoise configuration
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # --- Media files (Ảnh do người dùng upload) ---
-# Cấu hình URL và thư mục lưu trữ cho file media
-
-# URL để truy cập các file media trên trình duyệt (ví dụ: /media/ten_anh.jpg)
 MEDIA_URL = '/media/'
-
-# Đường dẫn đến thư mục vật lý trên server để lưu các file media
-# Django sẽ tự tạo thư mục 'media' ở thư mục gốc của dự án cho bạn.
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # --- PAYOS SETTINGS ---
-# Đọc cấu hình PayOS từ file .env
 PAYOS_CLIENT_ID = env('PAYOS_CLIENT_ID', default='')
 PAYOS_API_KEY = env('PAYOS_API_KEY', default='')
 PAYOS_CHECKSUM_KEY = env('PAYOS_CHECKSUM_KEY', default='')
+
+# === PRODUCTION SETTINGS ===
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
