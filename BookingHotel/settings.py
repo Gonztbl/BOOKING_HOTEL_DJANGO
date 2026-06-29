@@ -3,7 +3,8 @@
 from pathlib import Path
 import environ
 import os
-
+import pymysql
+pymysql.install_as_MySQLdb()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -78,15 +79,15 @@ WSGI_APPLICATION = 'BookingHotel.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('DB_NAME', default='bookinghotel'),
-        'USER': env('DB_USER', default='3q3Yfgwt9qwz5pZ.root'),
-        'PASSWORD': env('DB_PASSWORD', default=''),
-        'HOST': env('DB_HOST', default='gateway01.ap-northeast-1.prod.aws.tidbcloud.com'),
-        'PORT': env('DB_PORT', default=4000),
+        'NAME': 'bookinghotel',
+        'USER': '3q3Yfgwt9qwz5pZ.root',
+        'PASSWORD': 'fTgvHBRiVRym2Za1',
+        'HOST': 'gateway01.ap-northeast-1.prod.aws.tidbcloud.com',
+        'PORT': '4000',
         'OPTIONS': {
-            'charset': 'utf8mb4',
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            'ssl_ca': env('DB_SSL_CA', default=None),
+            'ssl': {
+                'ca': os.path.join(BASE_DIR, 'isrgrootx1.pem')  # ví dụ: 'certs/ca.pem'
+            }
         }
     }
 }
