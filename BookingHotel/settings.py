@@ -27,7 +27,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG', default=False)
 
 # ALLOWED_HOSTS configuration
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1', 'localhost', '*.onrender.com'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1', 'localhost', '.onrender.com', 'booking-hotel-django.onrender.com'])
 
 
 # Application definition
@@ -139,6 +139,7 @@ PAYOS_CHECKSUM_KEY = env('PAYOS_CHECKSUM_KEY', default='')
 
 # === PRODUCTION SETTINGS ===
 if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
