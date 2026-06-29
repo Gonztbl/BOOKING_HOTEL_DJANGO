@@ -27,8 +27,20 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG', default=False)
 
 # ALLOWED_HOSTS configuration
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1', 'localhost', '.onrender.com', 'booking-hotel-django.onrender.com'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
+if not ALLOWED_HOSTS or ALLOWED_HOSTS == ['']:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS.extend(['127.0.0.1', 'localhost', '.onrender.com'])
+    ALLOWED_HOSTS = list(set([host.strip(' "\'') for host in ALLOWED_HOSTS if host.strip()]))
 
+# CSRF configuration for production (required when behind a proxy/HTTPS)
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=['https://*.onrender.com'])
+if not CSRF_TRUSTED_ORIGINS or CSRF_TRUSTED_ORIGINS == ['']:
+    CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
+else:
+    CSRF_TRUSTED_ORIGINS.extend(['https://*.onrender.com'])
+    CSRF_TRUSTED_ORIGINS = list(set([origin.strip(' "\'') for origin in CSRF_TRUSTED_ORIGINS if origin.strip()]))
 
 # Application definition
 INSTALLED_APPS = [
